@@ -5,6 +5,13 @@
 - Backend: Django 6.1 + Django REST Framework, PostgreSQL
 - Frontend: React 19 + Vite (one page)
 
+## Live demo
+
+- App: https://callmatch.onrender.com
+- API: https://callmatch-api.onrender.com/api/organizations/
+
+Both run on Render's free plan, set up from `render.yaml`: Postgres, the Django API (gunicorn) and the React build as a static site. The API runs `migrate` and `seed_demo` every time it starts, and both are safe to repeat. The frontend calls the API through `VITE_API_URL`, and the API only allows that origin (`CORS_ALLOWED_ORIGINS`). The free API sleeps after about 15 minutes of no traffic, so the first request after that can take up to a minute.
+
 ## Setup from a fresh clone
 
 You need Python 3.12+, Node 20.19+ and a running PostgreSQL.
