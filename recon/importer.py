@@ -7,6 +7,7 @@ from decimal import Decimal
 from django.db import transaction
 from rest_framework.exceptions import ParseError
 
+from .airtable import get_client as get_airtable_client, sync_needs_review
 from .matching import find_matches
 from .models import BankTransaction, LineItem, Match, Organization
 
@@ -142,6 +143,9 @@ def import_statement(org, uploaded_file):
         Match.objects.bulk_create([
             Match(transaction=txn, line_item=item, reason=reason) for txn, item, reason in new_matches
         ])
+
+    # outside the DB transaction, so an Airtable problem can't undo the import
+    sync_needs_review(new_txns, get_airtable_client())
 
     summary['imported'] = len(new_txns)
     summary['duplicates'] = len(summary['duplicate_rows'])

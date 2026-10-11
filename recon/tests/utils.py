@@ -1,4 +1,5 @@
 from io import StringIO
+from unittest import mock
 
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.core.management import call_command
@@ -17,6 +18,12 @@ class ReconTestCase(APITestCase):
     @classmethod
     def setUpTestData(cls):
         call_command('seed_demo', stdout=StringIO())
+
+    def setUp(self):
+        # never talk to the real Airtable from tests
+        patcher = mock.patch('recon.importer.get_airtable_client', return_value=None)
+        patcher.start()
+        self.addCleanup(patcher.stop)
 
     def upload(self, rows, org='northwind', header=HEADER):
         return self.client.post(

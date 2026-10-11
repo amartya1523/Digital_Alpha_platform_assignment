@@ -38,4 +38,7 @@ class TransactionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = BankTransaction
-        fields = ['id', 'date', 'description', 'amount', 'bank_reference', 'status', 'review_reason', 'matches']
+        fields = [
+            'id', 'date', 'description', 'amount', 'bank_reference', 'status', 'review_reason',
+            'airtable_sync_status', 'matches',
+        ]

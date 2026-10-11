@@ -16,6 +16,7 @@ class OrganizationHeaderTests(ReconTestCase):
 
 class IsolationTests(ReconTestCase):
     def setUp(self):
+        super().setUp()
         self.upload('2026-04-07,WIRE INCOMING PATEL FAMILY TRUST,12500.00,credit,B1\n', org='northwind')
         self.upload('2026-04-16,WIRE INCOMING CEDAR GROVE FUND CC-2001,40000.00,credit,B2\n', org='bluebird')
         self.northwind_match = Match.objects.get(transaction__bank_reference='B1')

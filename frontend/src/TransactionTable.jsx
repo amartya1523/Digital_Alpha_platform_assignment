@@ -52,7 +52,12 @@ export default function TransactionTable({ org, transactions, loading, onChange 
                     <div className="muted small">{txn.bank_reference}</div>
                   </td>
                   <td className="num nowrap">{money(txn.amount)}</td>
-                  <td><span className={`badge ${txn.status}`}>{txn.status.replace('_', ' ')}</span></td>
+                  <td>
+                    <span className={`badge ${txn.status}`}>{txn.status.replace('_', ' ')}</span>
+                    {txn.airtable_sync_status !== 'not_synced' && (
+                      <div className="muted small">Airtable: {txn.airtable_sync_status.replace('_', ' ')}</div>
+                    )}
+                  </td>
                   <td>
                     {matches.length === 0 && <span className="muted">—</span>}
                     {matches.map((m) => (
