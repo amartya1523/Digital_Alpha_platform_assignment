@@ -13,6 +13,12 @@ CallMatch helps a GP reconcile a fund's bank statement against its capital calls
 
 When a fund calls capital, every LP wires its share to the fund's bank account. The bank descriptions are messy: some LPs include the reference (`CC-1003`), some write it differently (`cc1003`), and some only put their name. CallMatch imports the bank statement, suggests which capital call line item each payment belongs to, explains why, and lets the GP approve, reject or ignore each suggestion. Approving a match updates how much that LP has paid.
 
+## Demo video
+
+[![Watch the CallMatch demo (4 min)](screenshots/demo-video.png)](https://drive.google.com/file/d/1iDISaqm_2VNJSOqBHJ_THzHwkg4xtFrI/view?usp=sharing)
+
+A 4-minute walkthrough: seeding the data, importing a CSV, the suggestions and `needs_review` items, approving a match, switching organization, and a tour of the code and tests. Click the image to play it.
+
 ## Live demo
 
 **The project is deployed and you can try it right now, no setup needed.**
@@ -39,6 +45,7 @@ Built with **Django + Django REST Framework + PostgreSQL** on the backend and **
 
 ## Contents
 
+- [Demo video](#demo-video)
 - [Live demo](#live-demo)
 - [Getting started](#getting-started)
 - [Using the app](#using-the-app)
