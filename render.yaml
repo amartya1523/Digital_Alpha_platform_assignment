@@ -1,0 +1,46 @@
+databases:
+  - name: callmatch-db
+    plan: free
+    databaseName: recon
+    user: recon
+
+services:
+  - type: web
+    name: callmatch-api
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    # free plan has no pre-deploy step, so migrate + seed (both safe to repeat) on start
+    startCommand: python manage.py migrate && python manage.py seed_demo && gunicorn config.wsgi --bind 0.0.0.0:$PORT
+    healthCheckPath: /api/organizations/
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.8
+      - key: DJANGO_DEBUG
+        value: "0"
+      - key: DJANGO_SECRET_KEY
+        generateValue: true
+      - key: CORS_ALLOWED_ORIGINS
+        sync: false
+      - key: DB_HOST
+        fromDatabase: { name: callmatch-db, property: host }
+      - key: DB_PORT
+        fromDatabase: { name: callmatch-db, property: port }
+      - key: DB_NAME
+        fromDatabase: { name: callmatch-db, property: database }
+      - key: DB_USER
+        fromDatabase: { name: callmatch-db, property: user }
+      - key: DB_PASSWORD
+        fromDatabase: { name: callmatch-db, property: password }
+
+  - type: web
+    name: callmatch
+    runtime: static
+    rootDir: frontend
+    buildCommand: npm ci && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: VITE_API_URL
+        sync: false
