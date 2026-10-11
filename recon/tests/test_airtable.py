@@ -39,7 +39,9 @@ class AirtableSyncTests(ReconTestCase):
         self.assertEqual(suggested.airtable_sync_status, BankTransaction.NOT_SYNCED)
 
     def test_airtable_failure_does_not_break_import(self):
-        res = self.upload_with(FakeAirtable(fail=True))
+        # the failure should be logged, not raised
+        with self.assertLogs('recon.airtable', level='ERROR'):
+            res = self.upload_with(FakeAirtable(fail=True))
 
         self.assertEqual(res.status_code, 201)
         self.assertEqual(res.data['imported'], 2)
